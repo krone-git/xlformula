@@ -52,3 +52,8 @@ class GetColumnLetter(ExcelFormula):
         return (
             SUBSTITUTE(ADDRESS(ROW(), COLUMN(reference), 4), ROW(), "")
             )
+
+__all__ = (
+    k for k, v in vars().items() \
+    if isinstance(v, type) and issubclass(v, ExcelFormula)
+    )

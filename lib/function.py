@@ -30,8 +30,7 @@ from .argument import ExcelArgumentHandlerType, ExcelArgumentHandler, \
                         _funcargs_to_tuple
 
 
-__all__ = (             # Defines '__all__' for
-                        # implicit '*' imports;
+__all__ = (             # Defines '__all__' for implicit '*' imports;
     "ExcelFunction",    # 'ExcelFunction' class is the only class which
                         # should be implicitly imported.
     )

@@ -276,6 +276,7 @@ _BUILTIN_FUNCTIONS = {
 __all__ = (                         # Define '__all__' for implicit '*' imports;
     *_BUILTIN_FUNCTIONS.keys(),     # Only generated function classes should
                                     # be imported from namespace;
+    "FUNCTIONS"
     )
 
 
@@ -308,6 +309,8 @@ for k, v in _BUILTIN_FUNCTIONS.items():
     # Adds generated function class to namespace 'vars()' and 'FUNCTIONS'
     # dictionary for use as an inheritable base class;
     FUNCTIONS[name] = _vars[name] = func
+
+FUNCTIONS = frozenset(FUNCTIONS.keys())
 
 del _BUILTIN_FUNCTIONS, _vars, k, v     # Delete variables to prevent explicit
                                         # imports;

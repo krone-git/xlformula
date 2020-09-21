@@ -22,8 +22,6 @@ from itertools import chain
 
 
 __all__ = (                 # Defines '__all__' for implicit '*' imports;
-    "ExcelArgument",        # Only 'ExcelArgument' class should be imported
-                            # implicitly;
     )
 
 REQUIRED_ARGUMENTS = "__requiredarguments__"    # Constant for varname that
