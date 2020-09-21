@@ -2,14 +2,18 @@
 
 """
 Module contains all abstract classes available for type checking.
+
+----------------------------------------------------------------------
+
+It is not recommended for users to inherit from these metaclasses
+directly.
 """
 
 from .lib.function import ExcelFunctionType
 from .lib.formula import ExcelFormulaType
-from .string import ExcelStringBuilderType
-from .composite import ExcelCompositeType,
-from .call import ExcelCallType
-from .reference import ExcelReferenceType
+from .lib.composite import ExcelCompositeType, ExcelStringBuilderType
+from .lib.call import ExcelCallType
+from .lib.reference import ExcelReferenceType
 
 __all__ = (
     "ExcelFunctionType",
