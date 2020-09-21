@@ -1,7 +1,8 @@
 # ./lib/reference.py
 
 """
-Module defines 'ExcelReference' classes for working Excel range references.
+Module defines 'ExcelReference' classes for working with Excel range
+references.
 
 ---------------------------------------------------------------------
 
