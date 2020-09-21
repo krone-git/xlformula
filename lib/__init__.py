@@ -1,7 +1,7 @@
 # ./lib
 
 from .builtin import *
-from .butilin import __all__ as __builtin_all__
+from .builtin import __all__ as __builtin_all__
 
 from .reference import *
 from .reference import __all__ as __reference_all__
@@ -28,13 +28,13 @@ _CONVENIENCE_CLASSNAMES = {
     }
 
 _vars = vars()
-for k, v in _CONVENIENCE_CLASSNAMES.items():
+for _k, _v in _CONVENIENCE_CLASSNAMES.items():
     methods = (str.lower, str.title, str.upper) \
-              if len(k) > 1 else (str.lower, str.upper)
+              if len(_k) > 1 else (str.lower, str.upper)
     for method in methods:
-        _vars[method(k)] = v
+        _vars[method(_k)] = _v
 
-del _CONVENIENCE_CLASSNAMES, _vars, method, methods, k, v   # Delete to prevent
+del _vars, method, methods, _k, _v   # Delete to prevent
                                                             # explicit imports;
 
 __all__ = (
@@ -46,6 +46,7 @@ __all__ = (
     *_CONVENIENCE_CLASSNAMES
     )
 
+del _CONVENIENCE_CLASSNAMES
 
 del ExcelFunctionClassFactory, ExcelFunctionCallFactory     # Delete to limit
                                                             # direct access to

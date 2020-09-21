@@ -54,6 +54,8 @@ class GetColumnLetter(ExcelFormula):
             )
 
 __all__ = (
-    k for k, v in vars().items() \
-    if isinstance(v, type) and issubclass(v, ExcelFormula)
+    *(
+        k for k, v in vars().items() \
+        if isinstance(v, type) and issubclass(v, ExcelFormula)
+        ),
     )
