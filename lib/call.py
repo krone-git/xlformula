@@ -2,7 +2,8 @@
 
 """
 Module defines 'ExcelCall' classes for storing and handling individual
-sets of arguments passed to 'ExcelFunction' and 'ExcelFormula' classes;
+sets of arguments passed to a call of the 'ExcelFunction' and 'ExcelFormula'
+classes.
 
 ---------------------------------------------------------------------
 
@@ -47,7 +48,28 @@ class ExcelCallType(ExcelCompositeType):
 
 
 class ExcelCall(ExcelComposite, metaclass=ExcelCallType):
-    """"""
+    """
+    The 'ExcelCall' subclasses are designed to handle individual calls
+    to the 'ExcelFunction' and 'ExcelFormula' classes.
+
+    When one of these two classes are instantiated, it returns an instance
+    of the 'ExcelCall' that corresponds with the calling class rather than
+    an instance of the calling class.
+    
+    Arguments passed in this way are stored in the 'ExcelCall' instance,
+    which will handle these arguments according to the rules defined in the
+    calling 'ExcelFunction' or 'ExcelFormula' subclass.
+
+    ------------------------------------------------------------------
+
+    This class is not intended to be instantiated or subclassed directly.
+    Instead, users should subclass either the 'ExcelFunction' or
+    'ExcelFormula' calling classes and define the desired handling logic
+    within that subclass.
+
+    The user can then instantiate that calling subclass to create an
+    'ExcelCall' instance which will follow the logic of that subclass.
+    """
     def __init__(self, caller, args: tuple):
         # Instantiate parent classes;
         super().__init__()
@@ -114,31 +136,35 @@ class ExcelCall(ExcelComposite, metaclass=ExcelCallType):
         # Collect required and optional arguments;
         req_args = self.required_arguments
         opt_args = self.optional_arguments
+        sep = ", "
 
         # Join representation strings of each required argument with a comma
         # and space;
-        req_string = ", ".join(
+        req_string = sep.join(
             _repr_arg(arg) for arg in req_args
             )
         # Join representation strings of each optional argument with a comma
         # and space;
-        opt_string = ", ".join(
+        opt_string = sep.join(
             _repr_arg(arg) for arg in opt_args
             )
         # Enclose optional representation in '[]' if it exists;
         if opt_string or self._caller.is_openended():
             opt_string = f"[{opt_string}]"
-        #
-        arg_string = ", ".join((req_string, opt_string))
+        # Join the required and optional argument string with a comma and
+        # space;
+        arg_string = sep.join((req_string, opt_string))
+        # Return the classname of the caller class joined with the
+        # required and optional argument string;
         return f"'{self._caller.__name__}' ({arg_string})"
 
 
 class ExcelFunctionCall(ExcelCall):
-    # 'ExcelFunction' specific implementation of 'ExcelCall' class;
-
     # Set 'ExcelFunctionCall' '__doc__' string to that of 'ExcelCall' for
     # consistency;
-    __doc__ = ExcelCall.__doc__
+    __doc__ = "'ExcelFunction' specific implementation of 'ExcelCall' class" \
+              + "\n\n" + ExcelCall.__doc__
+    
     @property
     def function(self):
         # 'ExcelFunctionCall' class specific caller property;
@@ -155,11 +181,11 @@ class ExcelFunctionCall(ExcelCall):
 
 
 class ExcelFormulaCall(ExcelCall):
-    # 'ExcelFormula' specific implementation of 'ExcelCall' class;
-
     # Set 'ExcelFormulaCall' '__doc__' string to that of 'ExcelCall' for
     # consistency;
-    __doc__ = ExcelCall.__doc__
+    __doc__ = "'ExcelFormula' specific implementation of 'ExcelCall' class" \
+              + "\n\n" + ExcelCall.__doc__
+    
     @property
     def formula(self):
         # 'ExcelFormulaCall' specific caller property;
