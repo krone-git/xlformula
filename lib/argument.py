@@ -14,6 +14,7 @@ Classes and constants can be imported from either package with the
 'from [package] import *' statement.
 
 All abstract and meta classes defined here are imported into the 'abc'
+module.
 """
 
 from abc import ABCMeta, abstractclassmethod

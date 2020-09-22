@@ -15,7 +15,7 @@ Classes and constants can be imported from either package with the
 'from [package] import *' statement.
 
 All abstract and meta classes defined here are imported into the 'abc'
-package.
+module.
 """
 
 from abc import ABCMeta, abstractmethod
@@ -55,7 +55,7 @@ class ExcelCall(ExcelComposite, metaclass=ExcelCallType):
     When one of these two classes are instantiated, it returns an instance
     of the 'ExcelCall' that corresponds with the calling class rather than
     an instance of the calling class.
-    
+
     Arguments passed in this way are stored in the 'ExcelCall' instance,
     which will handle these arguments according to the rules defined in the
     calling 'ExcelFunction' or 'ExcelFormula' subclass.
@@ -164,7 +164,7 @@ class ExcelFunctionCall(ExcelCall):
     # consistency;
     __doc__ = "'ExcelFunction' specific implementation of 'ExcelCall' class" \
               + "\n\n" + ExcelCall.__doc__
-    
+
     @property
     def function(self):
         # 'ExcelFunctionCall' class specific caller property;
@@ -185,7 +185,7 @@ class ExcelFormulaCall(ExcelCall):
     # consistency;
     __doc__ = "'ExcelFormula' specific implementation of 'ExcelCall' class" \
               + "\n\n" + ExcelCall.__doc__
-    
+
     @property
     def formula(self):
         # 'ExcelFormulaCall' specific caller property;

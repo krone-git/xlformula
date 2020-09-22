@@ -14,7 +14,7 @@ Classes and constants can be imported from either package with the
 'from [package] import *' statement.
 
 All abstract and meta classes defined here are imported into the 'abc'
-package.
+module.
 """
 
 from abc import ABCMeta
@@ -88,7 +88,7 @@ class ExcelFunctionArgumentHandlerType(ExcelArgumentHandlerType):
 class ExcelFunctionType(ExcelFunctionArgumentHandlerType,
                         ExcelFunctionNameHandler,
                         ABCMeta):
-    """Abstract class for 'ExcelFunction' class."""
+    """Abstract class for the 'ExcelFunction' class."""
     pass
 
 

@@ -14,7 +14,7 @@ Classes and constants can be imported from either package with the
 'from [package] import *' statement.
 
 All abstract and meta classes defined here are imported into the 'abc'
-package.
+module.
 """
 
 from string import ascii_uppercase
@@ -195,13 +195,16 @@ def _parse_cell_string(string: str) -> str:
     return tuple(_CELL_REFERENCE_PATTERN.findall(string))
 
 def _parse_reference_arguments(string: str) -> str:
-    pass
+    ###
+    raise NotImplementedError
 
 def _parse_range_arguments(string: str) -> str:
-    pass
+    ###
+    raise NotImplementedError
 
 def _parse_cell_arguments(string: str) -> str:
-    pass
+    ###
+    raise NotImplementedError
 
 
 def _build_single_cell_string(row: int, col: int, ref: int=REL_REF) -> str:
