@@ -54,8 +54,8 @@ for _k, _v in _CONVENIENCE_CLASSNAMES.items():
     # in '__all__' to allow the class to be imported with '*' with the given
     # varname;
     _k = _k.lower()
-    _vars.setdefault(_k_, _v)
-    _CONVENIENCE_CLASSNAMES.setdefault(_k_, _v)
+    _vars.setdefault(_k, _v)
+    _CONVENIENCE_CLASSNAMES.setdefault(_k, _v)
 
 del _vars, method, methods, _k, _v   # Delete to prevent explicit imports;
 
