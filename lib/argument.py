@@ -39,6 +39,9 @@ INHERIT_ARGUMENTS = "__inheritarguments__"      # Constant for varname that
                                                 # will inherit the argument
                                                 # parameters of its parent
                                                 #class;
+ARGUMENT_HANDLER_METHOD = "__argumenthandlermethod__"
+
+
 def _get_funcargs(cls, varname: str) -> tuple:
     """Returns the value of varname in class 'cls' or (...,) by default."""
     return getattr(cls, varname, (...,))
@@ -93,6 +96,7 @@ class ExcelArgumentHandlerType:
                                     # argument parameters that a user can
                                     # provide beyond the required arguments
                                     #  when instantiating the class;
+    __argumenthandlermethod__ = ""
 
     def __new__(cls, name: str, bases: tuple, namespace: dict):
         # Instantiate base class;
@@ -107,6 +111,29 @@ class ExcelArgumentHandlerType:
             # arguments defined in this class;
             req_args = _inherit_funcargs(REQUIRED_ARGUMENTS, bases, req_args)
             opt_args = _inherit_funcargs(OPTIONAL_ARGUMENTS, bases, opt_args)
+
+        if cls.__argumenthandlermethod__ \
+        and len(req_args) < 1 \
+        and len(opt_args) < 1:
+            arg_handler = getattr(cls, cls.__argumenthandlermethod__, None)
+            if arg_handler \
+            and not getattr(arg_handler, "__isabstractmethod__", False):
+                if arg_handler.__kwdefaults__:
+                    raise TypeError(
+                        f"'{arg_handler.__name__}' method for class "\
+                        f"'{cls.__name__}' cannot declare keyword-only " \
+                        "parameters; All keyword parameters must be " \
+                        "positional."
+                        )
+
+                arg_names = arg_handler.__code__.co_varnames[1:]
+                opt_count = len(arg_handler.__defaults__) \
+                            if arg_handler.__defaults__ \
+                            else 0
+                req_count = len(arg_names) - opt_count
+
+                req_args = _funcargs_to_tuple(arg_names[:req_count])
+                opt_args = _funcargs_to_tuple(arg_names[req_count:])
 
         # Assign processed argument parameters to this class;
         cls.__requiredarguments__ = req_args

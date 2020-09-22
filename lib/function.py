@@ -89,7 +89,7 @@ class ExcelFunctionType(ExcelFunctionArgumentHandlerType,
                         ExcelFunctionNameHandler,
                         ABCMeta):
     """Abstract class for the 'ExcelFunction' class."""
-    pass
+    __argumenthandlermethod__ = GET_VALUE
 
 
 class ExcelFunctionArgumentHandler(ExcelArgumentHandler):

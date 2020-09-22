@@ -6,5 +6,9 @@ from math import log10, floor
 import re
 
 
-_and = AND("fart")
-help(_and)
+class TEST(ExcelFunction):
+    def get_value(self, args, a, b, c):
+        pass
+
+print(TEST.arguments)
+TEST()

@@ -29,6 +29,8 @@ __all__ = (             # Defines '__all__' for implicit '*' imports;
                         # form this module;
     )
 
+FORMULATE = "formulate"
+
 
 class ExcelFormulaArgumentHandlerType(ExcelArgumentHandlerType):
     """
@@ -44,7 +46,7 @@ class ExcelFormulaArgumentHandlerType(ExcelArgumentHandlerType):
 class ExcelFormulaType(ExcelFormulaArgumentHandlerType,
                         ABCMeta):
     """Abstract class for the 'ExcelFormula' class."""
-    pass
+    __argumenthandlermethod__ = FORMULATE
 
 
 class ExcelFormula(ExcelArgumentHandler,
@@ -65,7 +67,6 @@ class ExcelFormula(ExcelArgumentHandler,
 
     @abstractmethod
     def formulate(self, *args):
-        #
         raise NotImplementedError
 
     def get_value(self):
