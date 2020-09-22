@@ -113,7 +113,7 @@ class ExcelCall(ExcelComposite, metaclass=ExcelCallType):
         Returns call's arguments that correspond with its caller's optional
         arguments.
         """
-        req_count = len(self._caller.optional_arguments)
+        req_count = len(self._caller.required_arguments)
         # Return arguments above the number of required arguments;
         return self._arguments[req_count:]
 
