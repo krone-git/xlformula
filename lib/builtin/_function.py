@@ -308,7 +308,8 @@ for k, v in _BUILTIN_FUNCTIONS.items():
     func = type(name, (ExcelFunction, *bases), v)
     # Adds generated function class to namespace 'vars()' and 'FUNCTIONS'
     # dictionary for use as an inheritable base class;
-    FUNCTIONS[name] = _vars[name] = func
+    _vars.sedefault(name, func)
+    FUNCTIONS[name] = func
 
 FUNCTIONS = frozenset(FUNCTIONS.keys())
 

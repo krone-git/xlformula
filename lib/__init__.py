@@ -43,10 +43,13 @@ for _k, _v in _CONVENIENCE_CLASSNAMES.items():
     methods = (str.lower, str.title, str.upper) \
               if len(_k) > 1 \
               else (str.lower, str.upper)
+
     for method in methods:
         # Apply the 'str' method to the varname and set it to the appropriate
         # class;
-        _vars[method(_k)] = _v
+        _k_ = method(_k)
+        _vars.setdefault(_k_, _v)
+        _CONVENIENCE_CLASSNAMES.setdefault(_k_, _v)
 
 del _vars, method, methods, _k, _v   # Delete to prevent explicit imports;
 
