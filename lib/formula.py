@@ -1,3 +1,22 @@
+# ./lib/formula.py
+
+"""
+Module defines the abstract 'ExcelFormula' class for defining and working
+with user-defined Excel formulas.
+
+---------------------------------------------------------------------
+
+Users should not import directly from this module.
+All relevant classes and constants defined here are imported into the
+'lib' package and then into the top-level 'xlformula' package.
+
+Classes and constants can be imported from either package with the
+'from [package] import *' statement.
+
+All abstract and meta classes defined here are imported into the 'abc'
+module.
+"""
+
 from abc import ABCMeta, abstractmethod
 
 from .argument import ExcelArgumentHandler, ExcelArgumentHandlerType

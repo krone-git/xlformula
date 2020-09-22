@@ -1,7 +1,7 @@
 # ./lib/call.py
 
 """
-Module defines 'ExcelCall' classes for storing and handling individual
+Module defines the 'ExcelCall' classes for storing and handling individual
 sets of arguments passed to a call of the 'ExcelFunction' and 'ExcelFormula'
 classes.
 

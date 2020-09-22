@@ -1,8 +1,9 @@
 # ./lib/argument.py
 
 """
-Module defines 'ExcelArgumentHandler' class for handling argument parameter
-definition and enforcement in 'ExceptFunction' and 'ExcelFormula' classes;
+Module defines the 'ExcelArgumentHandler' class for handling argument
+parameter definition and enforcement in 'ExceptFunction' and 'ExcelFormula'
+classes.
 
 ---------------------------------------------------------------------
 

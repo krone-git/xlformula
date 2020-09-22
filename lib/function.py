@@ -1,8 +1,8 @@
 # ./lib/function.py
 
 """
-Module defines abstract 'ExcelFunction' classes for defining and working
-Excel functions.
+Module defines the abstract 'ExcelFunction' class for defining and working
+with user-defined Excel functions.
 
 ---------------------------------------------------------------------
 
