@@ -247,7 +247,7 @@ class ExcelArgumentHandler(metaclass=ABCMeta):
     def get_value(self):
         """
         Abstract method used to calculate and return the value of contained
-        in an 'ExcellCall' object.
+        in an 'ExcelCall' object.
 
         'self' parameter is not an 'ExcelArgumentHandler' class, but instead
         an 'ExcelCall' object.
