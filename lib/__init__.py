@@ -30,6 +30,7 @@ _CONVENIENCE_CLASSNAMES = {
     "arg":  ExcelArgument,
     "var":  ExcelArgument,
     "func": ExcelFunctionClassFactory,
+    "call": ExcelFunctionCallFactory
     }
 
 _vars = vars()                                      # Store namespace 'vars()'
@@ -37,20 +38,20 @@ _vars = vars()                                      # Store namespace 'vars()'
                                                     # to 'vars()';
 for _k, _v in _CONVENIENCE_CLASSNAMES.items():
     # EDIT: 9/22/2020 Brandon Krone
-    # Original version of this block set varnames to lowercase, uppercase,
-    # and titlecase forms of the varname. This been changed to only set
+    # The original version of this block set varnames to lowercase, uppercase,
+    # and titlecase forms of the varname. This has been changed to only set
     # the varname to its lowercase form to avoid confusion and overlap
-    # with imported 'ExcelFunction' classes (which are uppercase only).
+    # with imported 'ExcelFunction' classes, which are necessarily uppercase.
     # The original block also included single letter varnames. This too has
-    # been changed to prevent overlap with other single letter variables
+    # been changed to prevent overlap with other single letter varnames
     # defined by the user after importing this module.
-    # If a single letter convenience variable name for any of the contained
-    # classes is desired, it should be done explicitly by the user with
+    # If a single letter, convenience varname for any of the contained
+    # classes is desired, it should be declared explicitly by the user with
     # the 'as' clause of an 'import' statement;
     
-    # Ensure class varname is lowercase, then set it to the appropiate class
-    # and include the varname in '_CONVENIENCE_CLASSNAMES' to be included in
-    # '__all__' to allow the class to be imported with '*' using the given
+    # Ensure class varname is lowercase, then set it to the appropiate class.
+    # Then, include the varname in '_CONVENIENCE_CLASSNAMES' to be included
+    # in '__all__' to allow the class to be imported with '*' with the given
     # varname;
     _k = _k.lower()
     _vars.setdefault(_k_, _v)
@@ -70,4 +71,4 @@ __all__ = (
     *_CONVENIENCE_CLASSNAMES
     )
 
-del _CONVENIENCE_CLASSNAMES     # Delete prevent explicit imports;
+del _CONVENIENCE_CLASSNAMES     # Delete to prevent explicit imports;
