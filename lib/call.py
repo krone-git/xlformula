@@ -35,7 +35,7 @@ __all__ = ()    # No classes defined in this package should be implicitly
 
 def _repr_arg(arg) -> str:
     # Return string representation of 'arg';
-    return arg.function.name if isinstance(arg, ExcelFunctionCall) \
+    return arg.function.__name__ if isinstance(arg, ExcelFunctionCall) \
         else repr(arg) if hasattr(arg, "__repr__") \
         else str(arg) if hasattr(arg, "__str__") \
         else arg.__name__ if isinstance(arg, type) \
