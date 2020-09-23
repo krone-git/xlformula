@@ -271,6 +271,18 @@ _BUILTIN_FUNCTIONS = {
     "COLUMNS": {
         REQ: ("array",)
         },
+    "INDEX": {
+        REQ: ("array", "row_num"),
+        OPT: ("column_name")
+        },
+    "INDIRECT": {
+        REQ: ("ref_text",),
+        OPT: ("A1",)
+        },
+    "MATCH": {
+        REQ: ("lookup_value", "lookup_array"),
+        OPT: ("match_type")
+        },
     # "OFFSET": {
     #
     #     },
@@ -278,6 +290,21 @@ _BUILTIN_FUNCTIONS = {
         OPT: ("reference",)
         },
 
+
+    # 'IS' functions
+    **{
+        "IS" + i.upper() : {REQ: ("value",)} for i in (
+            "BLANK",
+            "ERR",
+            "ERROR",
+            "LOGICAL",
+            "NA",
+            "NONTEXT",
+            "NUMBER",
+            "REF",
+            "TEXT"
+            )
+        }
     }
 
 __all__ = (                         # Define '__all__' for implicit '*' imports;
