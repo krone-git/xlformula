@@ -53,6 +53,58 @@ class GetColumnLetter(ExcelFormula):
             SUBSTITUTE(ADDRESS(ROW(), COLUMN(reference), 4), ROW(), "")
             )
 
+
+class IfModulo(ExcelFormula):
+    """
+    """
+    __requiredarguments__ = (
+        "logical",
+        "modulo",
+        "value_if_true",
+        "value_if_false"
+        )
+    __optionalarguments__ = ("if_modulo_equals",)
+    
+    def formulate(self, logical, module, if_true, if_false, remainder=0):
+        return (
+            IF(MOD(logical, module) == remainder, if_true, if_false),
+            )
+
+    
+class IfModuloChain(ExcelFormula):
+    """
+    """
+    __requiredarguments__ = (
+        "logical_test",
+        "value_if_true1",
+        "value_if_false_final"
+        )
+    __optionalarguments__ = (
+        "value_if_true2",
+        ...,
+        "start"
+        )
+    
+    def formulate(self, logical, if_true1, if_false_final, *args, start=0):
+        args = (
+            if_true1,
+            if_false_final,
+            *args
+            )
+        if_false_final = args[-1]
+        args = args[:-1]
+        mod = len(args)
+
+        for i in reversed(range(mod)):
+            if i > len(args) - 2:
+                _if_false = if_false_final
+            else:
+                _if_false = modulo 
+            modulo = IfModulo(logical, mod, args[i], _if_false, i)
+
+        return (modulo,)
+        
+
 __all__ = (
     *(
         k for k, v in vars().items() \
