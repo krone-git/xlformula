@@ -22,7 +22,9 @@ import re
 
 # Import base 'ExcelStringBuilder' class for 'ExcelReference' class
 # inheritance;
-from .composite import ExcelStringBuilder
+# Import '_to_composite' to allow 'ExcelComposite' objects to be passed
+# to 'ExcelReference' instance constructor.
+from .composite import ExcelStringBuilder, _to_composite
 
 
 _REFERENCE_VALUES = (       # Defines tuple of reference_type constant names
@@ -293,16 +295,22 @@ class ExcelReference(ExcelReferenceType):
             ExcelReference 'Named_Range' -> 'Named_Range'
     """
     def __init__(self, name: str):
-        self._name = name
-
+        self._name = _to_composite(name)    # Cast 'name' to 'ExcelComposite'
+                                            # object. This allows
+                                            # 'ExcelArgument' instances to be
+                                            # passed to the 'ExcelReference'
+                                            # constructor;
     @property
     def name(self) -> str:
         "Returns reference's name."
-        return self._name
+        return str(self._name.get_value())  # Return the value of the
+                                            # 'ExcelComposite' object '_name';
 
     def compile(self) -> str:
         "Returns reference's formula compiling string."
-        return self._name
+        
+        return str(self._name.get_value())  # Return the value of the
+                                            # 'ExcelComposite' object '_name';
 
 
 class ExcelRangeReference(ExcelReferenceType):
