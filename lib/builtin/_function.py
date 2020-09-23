@@ -143,6 +143,13 @@ _BUILTIN_FUNCTIONS = {
             lambda self: math.ceil(self.get_value())
             ),
         },
+    "MOD": {
+        REQ: ("number", "divisor"),
+        OPT: (),
+        GET: (
+            lambda self: self._arguments[0] % self._arguments[1]
+            )
+        },
     # "PI": {
     #
     #     },
