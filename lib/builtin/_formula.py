@@ -19,6 +19,7 @@ Formula classes can be imported from either package with the
 from ._function import *
 from ..formula import ExcelFormula
 from ..composite import ExcelArgument as Arg
+from ..reference import ExcelReference, ExcelRangeReference
 
 
 class BlankIfBlank(ExcelFormula):
