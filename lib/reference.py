@@ -48,8 +48,9 @@ __all__ = (                                     # Defines '__all__' for
                                                 # reference type constants;
     "ExcelReference",                           # Allows for import of
                                                 # 'ExcelReference' class;
-    "ExcelRangeReference"                       # Allows for import of
+    "ExcelRangeReference",                      # Allows for import of
                                                 # 'ExcelCellReference' class;
+    "get_column_row",                           #
     )
 
 del _REFERENCE_VALUES, _vars, i, v      # Delete variables to prevent
@@ -196,17 +197,26 @@ def _parse_cell_string(string: str) -> str:
     """Returns tuple of column and row contained within a cell reference."""
     return tuple(_CELL_REFERENCE_PATTERN.findall(string))
 
-def _parse_reference_arguments(string: str) -> str:
+def _parse_reference_arguments(string: str) -> (str, str, str, str):
     ###
     raise NotImplementedError
 
-def _parse_range_arguments(string: str) -> str:
+def _parse_range_arguments(string: str) -> (str, string):
     ###
     raise NotImplementedError
 
-def _parse_cell_arguments(string: str) -> str:
+def _parse_cell_arguments(string: str) -> (str, int):
     ###
     raise NotImplementedError
+
+def _parse_cell_column_row(string: str) -> (int, int):
+    col, row = _parse_cell_arguments(string)
+    return (
+        _alpha_column(col),
+        row
+        )
+
+get_column_row = _parse_cell_column_row
 
 
 def _build_single_cell_string(row: int, col: int, ref: int=REL_REF) -> str:
