@@ -19,7 +19,7 @@ Formula classes can be imported from either package with the
 from ._function import *
 from ..formula import ExcelFormula
 from ..composite import ExcelArgument as Arg
-from ..reference import ExcelReference, ExcelRangeReference
+from ..reference import *
 
 
 class BlankIfBlank(ExcelFormula):
@@ -52,6 +52,25 @@ class GetColumnLetter(ExcelFormula):
     def formulate(self, reference: str) -> tuple:
         return (
             SUBSTITUTE(ADDRESS(ROW(), COLUMN(reference), 4), ROW(), "")
+            )
+
+
+class IfFirstColumnRow(ExcelFormula):
+    """
+    """
+    __requiredarguments__ = (
+        "reference",
+        "value_if_true",
+        "value_if_false"
+        )
+    __optionalarguments__ = ("reference_type",)
+
+    def formulate(self, reference, if_true, if_false, ref=ABS_REF):
+        column, row = get_column_row(reference.get_value())
+        relative = ExcelRangeReference(row, column, ref=REL_REF)
+        absolute = ExcelRangeReference(row, column, ref=ref)
+        return (
+            IF(relative==absolute, if_true, if_false),
             )
 
 
@@ -104,7 +123,26 @@ class IfModuloChain(ExcelFormula):
             modulo = IfModulo(logical, mod, args[i], _if_false, i)
 
         return (modulo,)
+
+class BuildFilterString(ExcelFormula):
+    """
+    """
+    __requiredarguments__ = ("starting_reference", "delimiter")
+    __optionalarguments__ = ("double_delimiter",)
+
+    def formulate(self, ref, delimiter, double_delimiter=None):
+        if double_delimiter is None:
+            if isinstance(delimiter, ExcelArgument):
+                _delimiter = delimiter.get_value()
+            else:
+                _delimiter = delimiter
+            double_delimiter = ExcelArgument(_delimiter * 2)
+            
         
+        return (
+            ,
+            )
+
 
 __all__ = (
     *(
