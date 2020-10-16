@@ -22,9 +22,9 @@ import re
 
 # Import base 'ExcelStringBuilder' class for 'ExcelReference' class
 # inheritance;
-# Import '_to_composite' to allow 'ExcelComposite' objects to be passed
+# Import '_to_component' to allow 'ExcelComposite' objects to be passed
 # to 'ExcelReference' instance constructor.
-from .composite import ExcelStringBuilder, _to_composite
+from .composite import ExcelStringBuilder, ExcelComponent, _to_component
 
 
 _REFERENCE_VALUES = (       # Defines tuple of reference_type constant names
@@ -93,7 +93,12 @@ _SHEET_NAME_PATTERN = re.compile(
                                             # a sheet contained within a
                                             # reference;
     )
-
+_CELL_COLUMN_PATTERN = re.compile(
+    "[a-zA-Z]+"
+    )
+_CELL_ROW_PATTERN = re.compile(
+    "[0-9]+"
+    )
 
 def _alpha_recursion(value: int, string: str) -> str:
     """
@@ -201,19 +206,22 @@ def _parse_reference_arguments(string: str) -> (str, str, str, str):
     ###
     raise NotImplementedError
 
-def _parse_range_arguments(string: str) -> (str, string):
+def _parse_range_arguments(string: str) -> (str, str):
     ###
     raise NotImplementedError
 
 def _parse_cell_arguments(string: str) -> (str, int):
-    ###
-    raise NotImplementedError
+    """"""
+    print(string, type(string))
+    col = _CELL_COLUMN_PATTERN.search(string).group()
+    row = _CELL_ROW_PATTERN.search(string).group()
+    return (col, row)
 
 def _parse_cell_column_row(string: str) -> (int, int):
     col, row = _parse_cell_arguments(string)
     return (
         _alpha_column(col),
-        row
+        int(row)
         )
 
 get_column_row = _parse_cell_column_row
@@ -282,7 +290,7 @@ def _build_reference_string(row: int, col: int,
     return "".join((wb_string, sheet_string, ref_string))
 
 
-class ExcelReferenceType(ExcelStringBuilder):
+class ExcelReferenceType(ExcelStringBuilder, ExcelComponent):
     # Intended to be imported for type checking of 'ExcelReference' classes;
     # Imports into xlformula.abc package;
     """Abstract base class for 'ExcelReference' classes."""
@@ -292,7 +300,7 @@ class ExcelReferenceType(ExcelStringBuilder):
 class ExcelReference(ExcelReferenceType):
     """
     Simple implementaion for working with excel references.
-    Compiles with 'name' only when compiling formulas.
+    Compiles with 'reference' only when compiling formulas.
     Useful when including Excel named ranges within a formula.
 
     ------
@@ -301,26 +309,34 @@ class ExcelReference(ExcelReferenceType):
     instead of a 'str' will bypass '""' being added to its string when
     compiling formulas.
         e.g.
-            str 'Named_Range' -> '"Named_Range"'
-            ExcelReference 'Named_Range' -> 'Named_Range'
+            str 'Named_Range'               ->  '"Named_Range"'
+            ExcelReference 'Named_Range'    ->  'Named_Range'
     """
-    def __init__(self, name: str):
-        self._name = _to_composite(name)    # Cast 'name' to 'ExcelComposite'
-                                            # object. This allows
-                                            # 'ExcelArgument' instances to be
-                                            # passed to the 'ExcelReference'
-                                            # constructor;
+    def __init__(self, reference: str):
+        self._reference = _to_component(reference)  # Cast 'name' to
+                                                    # 'ExcelComposite' object.
+                                                    # This allows
+                                                    # 'ExcelArgument'
+                                                    # instances to be passed
+                                                    # to the 'ExcelReference'
+                                                    # constructor;
     @property
-    def name(self) -> str:
+    def reference(self) -> str:
         "Returns reference's name."
-        return str(self._name.get_value())  # Return the value of the
-                                            # 'ExcelComposite' object '_name';
+        return self.get_value()
+
+    def get_value(self) -> str:
+        "Returns reference's value."
+        return str(self._reference.get_value())     # Return the value of the
+                                                    # 'ExcelComposite' object
+                                                    # '_name';
 
     def compile(self) -> str:
         "Returns reference's formula compiling string."
-        
-        return str(self._name.get_value())  # Return the value of the
-                                            # 'ExcelComposite' object '_name';
+
+        return str(self._reference.get_value())     # Return the value of the
+                                                    # 'ExcelComposite' object
+                                                    # '_name';
 
 
 class ExcelRangeReference(ExcelReferenceType):
@@ -333,12 +349,12 @@ class ExcelRangeReference(ExcelReferenceType):
                 1, 1, ref=1, sheet="Sheet1", workbook="Book1.xlsx",
                 r_row=2, r_col=1, r_ref=4
                 )
-            wb_ref.compile() -> "[Book1.xlsx]'Sheet1'!$A$1:A2"
+            wb_ref.compile()        ->  "[Book1.xlsx]'Sheet1'!$A$1:A2"
 
             range_ref = ExcelRangeReference(
                 1, 1, ref=2, r_row=2, r_col=1, r_ref=3
                 )
-            range_ref.compile() -> "A$1:$A2"
+            range_ref.compile()     ->  "A$1:$A2"
 
     """
     def __init__(self, row: int=1, col: int=1, ref: int=ABS_REF, *,

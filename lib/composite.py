@@ -85,12 +85,12 @@ def _format_argument(arg):
         # Casts the argument to an 'ExcelComposite' object and sets it's
         # priority to 'True'.
         # Otherwise it only casts the arg to an 'ExcelComposite' object;
-        arg = _to_composite(arg)
+        arg = _to_component(arg)
         arg._priority = True
     else:
-        arg = _to_composite(arg)
+        arg = _to_component(arg)
 
-    if not isinstance(arg, ExcelComposite):
+    if not isinstance(arg, ExcelComponent):
         # If 'arg' cannot be cast to an 'ExcelComposite' object, raise
         # TypeError;
 
@@ -103,12 +103,12 @@ def _format_argument(arg):
 
     return arg      # Return the formatted argument;
 
-def _to_composite(arg):
+def _to_component(arg):
     """
     Casts 'arg' to an 'ExcelArgument' object if it is not already an
     'ExcelComposite' object.
     """
-    return arg if isinstance(arg, ExcelComposite) \
+    return arg if isinstance(arg, ExcelComponent) \
         else ExcelArgument(arg)
 
 def _construct_expression_method(operator):
@@ -141,8 +141,8 @@ def _prioritize_formula_string(func):
     head and tail of a compiled formula to ensure 'order of operation'
     priority.
     e.g.
-        (2 + 3) * 2 -> "(2 + 3) * 2" = 10
-        2 + 3 * 2 -> "2 + 3 * 2" = 8
+        (2 + 3) * 2     --->    "(2 + 3) * 2" = 10
+        2 + 3 * 2       -x->    "2 + 3 * 2" = 8
     """
     @wraps(func)
     def _prioritize(self):              # Wrap function;
@@ -207,6 +207,22 @@ class ExcelStringBuilder(metaclass=ExcelStringBuilderType):
         return self
 
 
+class ExcelComponent(metaclass=ABCMeta):
+    """
+    Base class for objects that will be interacted with directly by the user
+    when designing and compiling formulas.
+
+    -----------------------------------------------------------------
+
+    This class is not intended to be subclassed.
+    """
+
+    @abstractmethod
+    def get_value(self):
+        """Abstract method that calculates returns the value of the object."""
+        raise NotImplementedError
+
+
 class ExcelCompositeType(ExcelStringBuilderType, ABCMeta):
     """Abstract class for the 'ExcelComposite' classes."""
     def __new__(cls, name, bases, namespace):
@@ -221,10 +237,11 @@ class ExcelCompositeType(ExcelStringBuilderType, ABCMeta):
         return cls
 
 
-class ExcelComposite(ExcelStringBuilder, metaclass=ExcelCompositeType):
+class ExcelComposite(ExcelStringBuilder, ExcelComponent,
+                        metaclass=ExcelCompositeType):
     """
     Base class for objects that will be interacted with directly by the user
-    when desgined and compiling formulas.
+    when designing and compiling formulas.
 
     -----------------------------------------------------------------
 
@@ -265,11 +282,6 @@ class ExcelComposite(ExcelStringBuilder, metaclass=ExcelCompositeType):
     def has_priority(self):
         """Returns 'True' if the object has 'order of operations' priority."""
         return self._priority
-
-    @abstractmethod
-    def get_value(self):
-        """Abstract method that calculates returns the value of the object."""
-        raise NotImplementedError
 
 
 class ExcelArgument(ExcelComposite):
@@ -319,8 +331,8 @@ class ExcelExpression(ExcelComposite):
     and operators so that they can be included in the compiled formula
     string before the expression is calculated.
     e.g.
-        1 + 2 -> compile() -x-> "3" (undesired)
-        1 + 2 -> compile() -> "1 + 2" (desired)
+        1 + 2   ->  compile()   --->    "1 + 2" (desired)
+        1 + 2   ->  compile()   -x->    "3"     (undesired)
 
     Performing operations on any 'ExcelComposite' class will return an
     'ExcelExpression' object.
