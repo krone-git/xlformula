@@ -201,7 +201,7 @@ _BUILTIN_FUNCTIONS = {
 
     # String functions
     "CHAR": {
-        REQ: ( "number",),
+        REQ: ("number",),
         },
     "CONCATENATE": {
         **_TEXT_RANGE,
@@ -209,15 +209,20 @@ _BUILTIN_FUNCTIONS = {
             lambda self: "".join(str(i) for i in self.get_values())
             ),
         },
+    "FIND": {
+        REQ: ("find_text", "within_text"),
+        OPT: ("stat_num",)
+        },
     "LEN" :{
         **_TEXT,
         GET: (
             lambda self: len(self.get_value())
             )
         },
-    # "SUBSTITUTE": {
-    #
-    #     },
+     "SUBSTITUTE": {
+        REQ: ("text","old_text","new_text"),
+        OPT: ("instance_num",),
+         },
     # "TRIM": {
     #
     #     },
@@ -242,9 +247,9 @@ _BUILTIN_FUNCTIONS = {
     "TIME": {
         REQ: ("hour", "minute", "second")
         },
-    "TIMEVALUE": {
-
-        },
+    # "TIMEVALUE": {
+    #
+    #     },
     # "TODAY": {
     #
     #     },
@@ -281,7 +286,7 @@ _BUILTIN_FUNCTIONS = {
         },
     "MATCH": {
         REQ: ("lookup_value", "lookup_array"),
-        OPT: ("match_type")
+        OPT: ("match_type",)
         },
     # "OFFSET": {
     #
