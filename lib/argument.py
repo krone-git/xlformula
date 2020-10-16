@@ -49,7 +49,8 @@ def _get_funcargs(cls, varname: str) -> tuple:
 def _funcargs_to_tuple(args: tuple) -> tuple:
     """
     Returns 'arg' cast to a tuple if it is not already a tuple
-    e.g. "arg" -> ("arg",)
+        e.g.
+            "arg" -> ("arg",)
     """
     if isinstance(args, str) \
     or not isinstance(args, Iterable):
