@@ -25,7 +25,7 @@ from .function import ExcelFunctionClassFactory, ExcelFunctionCallFactory
 
 # Dynamically generate convenience namespace variables for Excel classes;
 _CONVENIENCE_CLASSNAMES = {
-    "cell": ExcelRangeReference,
+    "rng": ExcelRangeReference,
     "ref":  ExcelReference,
     "arg":  ExcelArgument,
     "var":  ExcelArgument,
@@ -48,7 +48,7 @@ for _k, _v in _CONVENIENCE_CLASSNAMES.items():
     # If a single letter, convenience varname for any of the contained
     # classes is desired, it should be declared explicitly by the user with
     # the 'as' clause of an 'import' statement;
-    
+
     # Ensure class varname is lowercase, then set it to the appropiate class.
     # Then, include the varname in '_CONVENIENCE_CLASSNAMES' to be included
     # in '__all__' to allow the class to be imported with '*' with the given
@@ -68,7 +68,7 @@ __all__ = (
     *__composite_all__,
     *__formula_all__,
     *__function_all__,
-    *_CONVENIENCE_CLASSNAMES
+    *_CONVENIENCE_CLASSNAMES.keys()
     )
 
 del _CONVENIENCE_CLASSNAMES     # Delete to prevent explicit imports;
